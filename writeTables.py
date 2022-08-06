@@ -8,17 +8,21 @@ if len( sys.argv ) < 3 :
   print( "Too few arguments. Specify intial and final range")
   exit(1)
 
-runI = int( sys.argv[-2] )
-runF = int( sys.argv[-1] )
+runI = int( sys.argv[1] )
+runF = int( sys.argv[2] )
 
 print( runI, runF)  
 
-fn = "B_DET_BMT_HV_SEC{}_L{}_DRIFT.txt"
+Ch = "DRIFT"
+if len(sys.argv) > 3:
+  Ch = sys.argv[-1]
+
+fn = "B_DET_BMT_HV_SEC{}_L{}_{}.txt"
 
 data = {}
 for i in range(1,4):
   for j in range( 1,7):
-    f =  fn.format(i,j)
+    f =  fn.format(i,j,Ch)
     d = np.loadtxt( f  )
     data[i*100+j] = d[ (d[:,0] >= runI) & ( d[:,0] <= runF ) ]
 

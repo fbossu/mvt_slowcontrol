@@ -1,7 +1,12 @@
 import numpy as np
+import sys
 
 
-fn = "B_DET_BMT_HV_SEC{}_L{}_DRIFT.txt"
+Ch = "DRIFT"
+if len(sys.argv) > 1:
+  Ch = sys.argv[-1]
+
+fn = "B_DET_BMT_HV_SEC{}_L{}_{}.txt"
 
 
 data = {}
@@ -11,7 +16,7 @@ all_runs = []
 
 for i in range(1,4):
   for j in range( 1,7):
-    f =  fn.format(i,j)
+    f =  fn.format(i,j, Ch)
 #print(f)
     d = np.loadtxt( f  )
 

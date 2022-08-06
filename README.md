@@ -28,7 +28,7 @@ This script requires matplotlib to be installed
 In order to find sub periods with constant values, we need to detect major changes in the values of the different channels
 
 ```
-$ python detect_changes.py | tee changes.txt
+$ python detect_changes.py [DRIFT/STRIP] | tee changes.txt
 ```
 
 It requires numpy to be installed.
@@ -39,7 +39,7 @@ It requires numpy to be installed.
 ### Write tables for ccdb
 
 ``` 
-$ while read line; do python /writeTables.py $line; done < changes.txt
+$ while read line; do python /writeTables.py $line [DRIFT/STRIP]; done < changes.txt
 
 ```
 
