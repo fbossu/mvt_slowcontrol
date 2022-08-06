@@ -51,7 +51,7 @@ function addtime ()
 while read line
 do 
   ch=$(echo $line | cut -d: -f1)
-  if [ -f ${ch}.txt]
+  if [ -f ${ch}.txt ]
   then
     rm ${ch}.txt
   fi
