@@ -57,9 +57,28 @@ do
   fi
 done < $BMT_NAMES
 
+# some cool effect for the progress bar
+nruns=$(wc -l $RUNS)
+irun=0
+
+function bar () {
+        k=$( echo "$1*100/$2" | bc )
+        echo -n "[ "
+        for ((i = 0 ; i <= k; i++)); do echo -n "#"; done
+        for ((j = i ; j <= 100 ; j++)); do echo -n " "; done
+        echo -n " ] "
+        echo -n "$k %" $'\r'
+}
+
 # loop over the lines of the RUNS file
 while read run
 do
+
+  #print some progress
+  bar $irun $nruns
+  let irun++
+  # -----------------
+
   R=$(echo $run | cut -d\  -f1)
   T=$(echo $run | awk '{print $2 " " $3}')
 
@@ -81,7 +100,7 @@ do
     do
         t=${t/T/ }
         #echo "$t"
-        v=$(myget -c $vmon -t"$t" -w-)
+        v=$(myget -m history -c $vmon -t"$t" -w-)
         hv=$(echo $v | awk '{print $3}')
         if (( $( echo $"$hv > $HV" | bc -l ) ))
         then
@@ -95,3 +114,7 @@ do
     echo $R $HV >> ${ch}.txt
   done < $BMT_NAMES
 done < $RUNS
+
+# final print
+bar $irun $nruns
+echo
