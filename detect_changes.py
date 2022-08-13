@@ -14,23 +14,26 @@ data = {}
 runs = []
 all_runs = []
 
+delta = 45        # maximum difference allowed between runs
+if Ch == "STRIP":
+  delta = 5
+
 for i in range(1,4):
   for j in range( 1,7):
     f =  fn.format(i,j, Ch)
-#print(f)
     d = np.loadtxt( f  )
-
 
     prev_val = 0;
     for (run , val) in d:
-      if run > 15059 and val < 600 :
-        continue
+      #if run > 15059 and val < 600 :
+        #continue
       
       if run not in all_runs:
         all_runs.append( int(run))
 
-      if abs( val - prev_val) > 45:
-#print("SEC{}_L{} : run {}  val {}".format(i,j,run, val) )
+      if abs( val - prev_val) > delta:
+        if Ch == "STRIP" and prev_val < 400 and val < 400:
+          continue
         prev_val = val
         
         run = int(run)
@@ -39,8 +42,6 @@ for i in range(1,4):
 
 all_runs = sorted(all_runs)
 runs = sorted(runs)
-#print( all_runs, runs )
-
 
 for i,r in enumerate(runs):
 

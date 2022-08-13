@@ -27,7 +27,7 @@ for i in range(1,4):
     data[i*100+j] = d[ (d[:,0] >= runI) & ( d[:,0] <= runF ) ]
 
 
-fout = open( "table_{}_{}.txt".format( runI, runF ), 'w' )
+fout = open( "table_{}_{}_{}.txt".format( Ch, runI, runF ), 'w' )
 for j in range(1,7):
   for i in range( 1, 4 ):
 
