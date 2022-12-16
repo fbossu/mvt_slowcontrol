@@ -81,12 +81,8 @@ do
 
   R=$(echo $run | cut -d\  -f1)
   T=$(echo $run | awk '{print $2 " " $3}')
+  T=$(addtime ${T/ /T} 120 )   # 2 minutes
 
-  # Crate three time stamps to compare values later 
-  T1=$(addtime ${T/ /T} 0 | sed -e 's/ /T/' )   #  6 minutes
-  T2=$(addtime ${T/ /T} 480 | sed -e 's/ /T/' )   #  8 minutes
-  T3=$(addtime ${T/ /T} 720 | sed -e 's/ /T/' )   # 12 minutes
-  TIMES=("$T1" "$T2" "$T3")
 
 # loop over the slow control variables
   while read line
@@ -96,19 +92,15 @@ do
  
     # check a three different times the value and get the maximum
     HV=0
-    for t in ${TIMES[@]}
+    v=$(myget -c $vmon -b"$T" -e^20m | awk '{print $3}')
+    #v=$(myget -m history -c $vmon -b"$T" -e^20m | awk '{print $3}')
+    for t in ${v}
     do
-        t=${t/T/ }
-        #echo "$t"
-        v=$(myget -m history -c $vmon -t"$t" -w-)
-        hv=$(echo $v | awk '{print $3}')
-        if (( $( echo $"$hv > $HV" | bc -l ) ))
+        if (( $( echo $"$t > $HV" | bc -l ) ))
         then
-            HV=$hv
+            HV=$t
         fi
-#printf '%5.1f ' "$hv"
     done
-#   echo " --- " $HV
 
     # write (append) the run and the value to the 
     echo $R $HV >> ${ch}.txt
