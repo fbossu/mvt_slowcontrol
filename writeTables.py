@@ -37,8 +37,8 @@ for j in range(1,7):
       print( "ERROR: S%d L%d, initial and final values are different" %( i, j ) )
 
     print(d[0,1], end=' ')
-    fout.write( str(i) + " " + str(j) + " 0 " +str(d[0,1])+" ")
+    fout.write( str(i) + " " + str(j) + " 0 " +str(d[0,1])+"\n")
   print()
-  fout.write('\n')
+#fout.write('\n')
 
 fout.close()
