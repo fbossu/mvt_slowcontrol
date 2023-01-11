@@ -79,9 +79,10 @@ do
   let irun++
   # -----------------
 
+
   R=$(echo $run | cut -d\  -f1)
   T=$(echo $run | awk '{print $2 " " $3}')
-  T=$(addtime ${T/ /T} 120 )   # 2 minutes
+  T2=$(addtime ${T/ /T} 600 )   # 10 minutes
 
 
 # loop over the slow control variables
@@ -92,8 +93,14 @@ do
  
     # check a three different times the value and get the maximum
     HV=0
-    v=$(myget -c $vmon -b"$T" -e^20m | awk '{print $3}')
-    #v=$(myget -m history -c $vmon -b"$T" -e^20m | awk '{print $3}')
+    #v=$(myget -c $vmon -b"$T" -e^20m | awk '{print $3}')
+    v=$(myget -m history -c $vmon -b"$T" -e"$T2" | awk '{print $3}')
+    re='^[0-9]+$'
+    if ! [[ $v =~ $re ]] ; then
+       # echo "error: Not a number" >&2
+        v=$(myget -m history -c $vmon -t"$T2" -w- | awk '{print $3}')
+    fi
+
     for t in ${v}
     do
         if (( $( echo $"$t > $HV" | bc -l ) ))
