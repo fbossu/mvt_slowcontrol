@@ -28,8 +28,8 @@ for i in range(1,4):
 
 
 fout = open( "table_{}_{}_{}.txt".format( Ch, runI, runF ), 'w' )
-for j in range(1,7):
-  for i in range( 1, 4 ):
+for i in range( 1, 4 ):
+  for j in range(1,7):
 
     d = data[i*100+j]
 
